@@ -11,10 +11,10 @@ class FaqPage(BasePage):
         super().__init__(driver)
 
     def check_answer(self, locator, accordion_id):
-        self.wait_for_element_visible(locator)  # этим повысил проходимость теста
+        self.wait_for_element_visible(locator)  # этим повысил проходимость теста для лисы
         self.scroll_page_to_element(locator)
-        #time.sleep(1)
-        self.wait_for_element_visible(locator)  # этим повысил проходимость теста
+        #time.sleep(1)                          # с этим слипом на лисе passed 100%
+        self.wait_for_element_visible(locator)  # этим повысил проходимость теста для лисы
         self.click_element(locator)
         self.wait_for_element_visible(accordion_id)
         return self.get_accordion_text(accordion_id)
