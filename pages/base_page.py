@@ -30,7 +30,7 @@ class BasePage:
         self.find_element(locator, timeout).send_keys(text)
 
     def wait_for_element_visible(self, locator, timeout: int = 10):
-        return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+        return WebDriverWait(self.driver, timeout).until(EC.visibility_of(self.find_element(locator, timeout)))
 
     def wait_for_elements_visible(self, locator, timeout: int = 10):
         return WebDriverWait(self.driver, timeout).until(expected_conditions.visibility_of_all_elements_located(locator))

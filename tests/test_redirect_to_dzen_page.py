@@ -9,24 +9,18 @@ from pages.order_page import OrderPage
 class TestRedirectToDzenPage:
     @allure.title("Проверка открытия новой вкладки ")
     @allure.description("Проверка, что при нажатии на лого яндекс откроется новая вкладка dzen")
-    def test_redirect_to_dzen_page(self, driver_setup):
+    def test_redirect_to_dzen_page(self, setup_home_page):
         """проверка, что при нажатии на лого яндекс откроется новая вкладка dzen"""
-        driver = driver_setup
+        driver = setup_home_page
         order_page = OrderPage(driver)
         with allure.step("Клик по кнопке заказать"):
             order_page.click_element(HeaderLocators.BTN_ORDER_HEADER)
         with allure.step("Клик по лого"):
             order_page.click_element(HeaderLocators.LINK_LOGO)
         with allure.step("Ожидание открытия второго окна"):
-            wait = WebDriverWait(driver, 10)
-            original_window = driver.current_window_handle
-            wait.until(EC.number_of_windows_to_be(2))
-            for window_handle in driver.window_handles:
-                if window_handle != original_window:
-                    driver.switch_to.window(window_handle)
-                    break
+            order_page.open_new_tab()
         with allure.step("Проверка имени заголовка страницы"):
-            wait.until(EC.title_contains(DZEN_TITLE))
+            order_page.wait_for_title(DZEN_TITLE)
             expected_url = DZEN_URL
             actual_url = driver.current_url
         with allure.step("Проверка адреса вкладки с ожиданием"):

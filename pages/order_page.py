@@ -1,11 +1,11 @@
-import random
-
 import allure
+from selenium.webdriver.support.wait import WebDriverWait
 
-from helper import get_data_for_make_order
 from messages import COMMIT_MESSAGE
+from my_data import *
 from pages.base_page import BasePage
 from locators.order_locators import OrderLocatorsPage
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class OrderPage(BasePage):
@@ -40,28 +40,27 @@ class OrderPage(BasePage):
     @allure.step("Оформление заказа end_to_end")
     def make_order(self):
         """оформление заказа end_to_end"""
-        random_name, random_first_name, random_address, phone_num, data_of_rent = get_data_for_make_order()
         with allure.step("Ввод имени"):
-            self.input_symbols(OrderLocatorsPage.INPUT_NAME, random_name)
+            self.input_symbols(OrderLocatorsPage.INPUT_NAME, RANDOM_NAME)
 
         with allure.step("Ввод фамилии"):
-            self.input_symbols(OrderLocatorsPage.INPUT_SEC_NAME, random_first_name)
+            self.input_symbols(OrderLocatorsPage.INPUT_SEC_NAME, RANDOM_FIRST_NAME)
 
         with allure.step("Ввод адреса"):
-            self.input_symbols(OrderLocatorsPage.INPUT_ADDRESS, random_address)
+            self.input_symbols(OrderLocatorsPage.INPUT_ADDRESS, RANDOM_ADDRESS)
 
         with allure.step("Выбор станции"):
             self.click_element(OrderLocatorsPage.SELECT_STATION)
             self.choice_station_from_select(OrderLocatorsPage.BTN_VALUE_STATION)  # иногда не срабатывает выбор.
 
         with allure.step("Ввод номера телефона"):
-            self.input_symbols(OrderLocatorsPage.INPUT_PHONE, phone_num)
+            self.input_symbols(OrderLocatorsPage.INPUT_PHONE, PHONE_NUM)
 
         with allure.step("Переход к следующему шагу"):
             self.click_element(OrderLocatorsPage.BTN_NEXT)
 
         with allure.step("Ввод даты аренды"):
-            self.input_symbols(OrderLocatorsPage.INPUT_DATE, data_of_rent)
+            self.input_symbols(OrderLocatorsPage.INPUT_DATE, DATA_OF_RENT)
 
         with allure.step("Выбор дня аренды"):
             self.click_element(OrderLocatorsPage.SELECTED_DAY_LOCATOR)
@@ -83,3 +82,13 @@ class OrderPage(BasePage):
         with allure.step("Ожидание подтверждения заказа"):
             self.wait_for_element_visible(OrderLocatorsPage.ORDER_CONFIRMED)
 
+    def open_new_tab(self):
+        original_window = self.driver.current_window_handle
+        WebDriverWait(self.driver, 10).until(EC.number_of_windows_to_be(2))
+        for window_handle in self.driver.window_handles:
+            if window_handle != original_window:
+                self.driver.switch_to.window(window_handle)
+                break
+
+    def wait_for_title(self, title, timeout=10):
+        WebDriverWait(self.driver, timeout).until(EC.title_contains(title))

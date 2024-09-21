@@ -8,9 +8,9 @@ from pages.order_page import OrderPage
 class TestRedirectToHomePage:
     @allure.title("Проверка редиректа")
     @allure.description("Проверка, что при нажатии на лого самоката будет переход на главную страницу")
-    def test_redirect_to_home_page(self, driver_setup):
+    def test_redirect_to_home_page(self, setup_home_page):
         """проверка, что при нажатии на лого самоката будет переход на главную страницу"""
-        driver = driver_setup
+        driver = setup_home_page
         order_page = OrderPage(driver)
         with allure.step("Клик по кнопке заказать"):
             order_page.click_element(HeaderLocators.BTN_ORDER_HEADER)

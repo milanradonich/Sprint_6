@@ -1,4 +1,3 @@
-import time
 import allure
 
 from pages.base_page import BasePage
@@ -13,7 +12,6 @@ class FaqPage(BasePage):
             self.wait_for_element_visible(locator)  # этим повысил проходимость теста для лисы
         with allure.step("Прокрутка страницы к вопросу"):
             self.scroll_page_to_element(locator)
-        #time.sleep(1)                          # с этим слипом на лисе passed 100%
         with allure.step("Ожидание кликабельности вопроса"):
             self.element_to_be_clickable(locator)  # этим повысил проходимость теста для лисы
         with allure.step("Клик по вопросу"):

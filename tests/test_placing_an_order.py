@@ -10,9 +10,9 @@ from pages.order_page import OrderPage
 class TestOrderBuy:
     @allure.title("Тест заказа через кнопку в хедере")
     @allure.description("Проверка оформления заказа через кнопку 'Заказать' в хедере сайта.")
-    def test_order_using_header_btn(self, driver_setup):
+    def test_order_using_header_btn(self, setup_home_page):
         """тест заказа через кнопку заказать в хедере"""
-        driver = driver_setup
+        driver = setup_home_page
         order_page = OrderPage(driver)
         with allure.step("Клик по кнопке 'Заказать' в хедере"):
             order_page.click_element(HeaderLocators.BTN_ORDER_HEADER)
@@ -25,9 +25,9 @@ class TestOrderBuy:
 
     @allure.title("Тест заказа через кнопку внизу")
     @allure.description("Проверка оформления заказа через кнопку 'Заказать' внизу сайта.")
-    def test_order_using_middle_btn(self, driver_setup):
+    def test_order_using_middle_btn(self, setup_home_page):
         """тест заказа через кнопку заказать внизу"""
-        driver = driver_setup
+        driver = setup_home_page
         order_page = OrderPage(driver)
         with allure.step("Скролл до области с кнопкой"):
             order_page.scroll_page_to_element(HomePageLocators.PARENT)
