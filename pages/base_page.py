@@ -35,10 +35,11 @@ class BasePage:
     def wait_for_elements_visible(self, locator, timeout: int = 10):
         return WebDriverWait(self.driver, timeout).until(expected_conditions.visibility_of_all_elements_located(locator))
 
+    def wait_for_text_in_element(self, locator, text, timeout: int = 10):
+        return WebDriverWait(self.driver, 10).until(EC.text_to_be_present_in_element(locator, text))
+
     def get_text_locator(self, locator, timeout: int = 10):
-        self.wait_for_element_visible(locator, timeout)
-        text_locator = self.find_element(locator, timeout)
-        return text_locator.text
+        return self.find_element(locator, timeout).text
 
     def element_to_be_clickable(self, locator, timeout: int = 10):
         return WebDriverWait(self.driver, timeout).until(expected_conditions.element_to_be_clickable(locator))

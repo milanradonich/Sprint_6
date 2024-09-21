@@ -1,5 +1,4 @@
-import time
-
+import allure
 import pytest
 
 from locators.faq_locators import FaqLocators
@@ -18,8 +17,12 @@ class TestFaqPage:
         (FaqLocators.LINK_ASK_7, FaqLocators.LINK_ANSWER_7, FaqLocators.EXPECTED_ANSWER_7),
         (FaqLocators.LINK_ASK_8, FaqLocators.LINK_ANSWER_8, FaqLocators.EXPECTED_ANSWER_8),
     ])
+    @allure.title("Проверка аккордиона")
+    @allure.description("Тест проверяет, что по клику на вопрос отображается правильный ответ")
     def test_click_accordion(self, driver_setup, link_ask, link_answer, expected_answer):
         driver = driver_setup
         faq_page = FaqPage(driver)
-        actual_text = faq_page.check_answer(link_ask, link_answer)
-        assert actual_text == expected_answer, ANSWER_ERROR
+        with allure.step("Клик по вопросу"):
+            actual_text = faq_page.check_answer(link_ask, link_answer, expected_answer)
+        with allure.step("Проверка текста ответа"):
+            assert actual_text == expected_answer, ANSWER_ERROR

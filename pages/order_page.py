@@ -1,5 +1,7 @@
 import random
 
+import allure
+
 from helper import get_data_for_make_order
 from messages import COMMIT_MESSAGE
 from pages.base_page import BasePage
@@ -35,24 +37,49 @@ class OrderPage(BasePage):
             self.click_element(checkboxes[0])
             self.click_element(checkboxes[1])
 
+    @allure.step("Оформление заказа end_to_end")
     def make_order(self):
         """оформление заказа end_to_end"""
         random_name, random_first_name, random_address, phone_num, data_of_rent = get_data_for_make_order()
-        self.input_symbols(OrderLocatorsPage.INPUT_NAME, random_name)
-        self.input_symbols(OrderLocatorsPage.INPUT_SEC_NAME, random_first_name)
-        self.input_symbols(OrderLocatorsPage.INPUT_ADDRESS, random_address)
-        self.click_element(OrderLocatorsPage.SELECT_STATION)
-        self.choice_station_from_select(OrderLocatorsPage.BTN_VALUE_STATION)  # иногда не срабатывает выбор.
-                                                                              # Отловить причину пока не смог.
-        self.input_symbols(OrderLocatorsPage.INPUT_PHONE, phone_num)
-        self.click_element(OrderLocatorsPage.BTN_NEXT)
-        self.input_symbols(OrderLocatorsPage.INPUT_DATE, data_of_rent)
-        self.click_element(OrderLocatorsPage.SELECTED_DAY_LOCATOR)
-        self.click_element(OrderLocatorsPage.SELECT_RENTAL_PERIOD)
-        self.choice_rental_period(OrderLocatorsPage.BTN_VALUE_PERIOD)
-        self.choice_checkbox_random()
-        self.input_symbols(OrderLocatorsPage.INPUT_COMMIT, COMMIT_MESSAGE)
-        self.click_element(OrderLocatorsPage.BTN_ORDER_MIDDLE)
-        self.click_element(OrderLocatorsPage.BTN_YES_CONFIRM_ORDER)
-        self.wait_for_element_visible(OrderLocatorsPage.ORDER_CONFIRMED)
+        with allure.step("Ввод имени"):
+            self.input_symbols(OrderLocatorsPage.INPUT_NAME, random_name)
+
+        with allure.step("Ввод фамилии"):
+            self.input_symbols(OrderLocatorsPage.INPUT_SEC_NAME, random_first_name)
+
+        with allure.step("Ввод адреса"):
+            self.input_symbols(OrderLocatorsPage.INPUT_ADDRESS, random_address)
+
+        with allure.step("Выбор станции"):
+            self.click_element(OrderLocatorsPage.SELECT_STATION)
+            self.choice_station_from_select(OrderLocatorsPage.BTN_VALUE_STATION)  # иногда не срабатывает выбор.
+
+        with allure.step("Ввод номера телефона"):
+            self.input_symbols(OrderLocatorsPage.INPUT_PHONE, phone_num)
+
+        with allure.step("Переход к следующему шагу"):
+            self.click_element(OrderLocatorsPage.BTN_NEXT)
+
+        with allure.step("Ввод даты аренды"):
+            self.input_symbols(OrderLocatorsPage.INPUT_DATE, data_of_rent)
+
+        with allure.step("Выбор дня аренды"):
+            self.click_element(OrderLocatorsPage.SELECTED_DAY_LOCATOR)
+
+        with allure.step("Выбор периода аренды"):
+            self.click_element(OrderLocatorsPage.SELECT_RENTAL_PERIOD)
+            self.choice_rental_period(OrderLocatorsPage.BTN_VALUE_PERIOD)
+
+        with allure.step("Выбор случайного чекбокса"):
+            self.choice_checkbox_random()
+
+        with allure.step("Ввод комментария"):
+            self.input_symbols(OrderLocatorsPage.INPUT_COMMIT, COMMIT_MESSAGE)
+
+        with allure.step("Подтверждение заказа"):
+            self.click_element(OrderLocatorsPage.BTN_ORDER_MIDDLE)
+            self.click_element(OrderLocatorsPage.BTN_YES_CONFIRM_ORDER)
+
+        with allure.step("Ожидание подтверждения заказа"):
+            self.wait_for_element_visible(OrderLocatorsPage.ORDER_CONFIRMED)
 
