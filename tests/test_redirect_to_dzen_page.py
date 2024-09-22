@@ -1,7 +1,5 @@
 import allure
-from selenium.webdriver.support.wait import WebDriverWait
 from locators.header_locators import HeaderLocators
-from selenium.webdriver.support import expected_conditions as EC
 from my_data import *
 from pages.order_page import OrderPage
 
@@ -22,6 +20,6 @@ class TestRedirectToDzenPage:
         with allure.step("Проверка имени заголовка страницы"):
             order_page.wait_for_title(DZEN_TITLE)
             expected_url = DZEN_URL
-            actual_url = driver.current_url
+            actual_url = order_page.get_current_url()
         with allure.step("Проверка адреса вкладки с ожиданием"):
             assert actual_url == expected_url, f"Ожидался URL: {expected_url}, но получен: {actual_url}"

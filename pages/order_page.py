@@ -15,6 +15,9 @@ class OrderPage(BasePage):
     def open_page(self, url):
         self.navigate(url)
 
+    def get_current_url(self):
+        return self.driver.current_url
+
     def choice_station_from_select(self, locator):
         """выбор станции метро"""
         self.scroll_page_to_element(locator)
@@ -22,7 +25,7 @@ class OrderPage(BasePage):
 
     def choice_rental_period(self, locator):
         """выбор периода аренды"""
-        self.wait_for_element_visible(locator)
+        self.find_element(locator)
         self.scroll_page_to_element(locator)
         self.click_element(locator)
 
@@ -80,7 +83,7 @@ class OrderPage(BasePage):
             self.click_element(OrderLocatorsPage.BTN_YES_CONFIRM_ORDER)
 
         with allure.step("Ожидание подтверждения заказа"):
-            self.wait_for_element_visible(OrderLocatorsPage.ORDER_CONFIRMED)
+            self.find_element(OrderLocatorsPage.ORDER_CONFIRMED)
 
     def open_new_tab(self):
         original_window = self.driver.current_window_handle

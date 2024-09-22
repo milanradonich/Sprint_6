@@ -18,6 +18,6 @@ class TestRedirectToHomePage:
             order_page.click_element(HeaderLocators.LINK_SCOOTER)
         expected_url = BASE_URL
         with allure.step("Получение актуального адреса"):
-            actual_url = driver.current_url
+            actual_url = order_page.get_current_url()
         with allure.step("Проверка адреса новой страницы с ожиданием"):
             assert actual_url == expected_url, f"Ожидался URL: {expected_url}, но получен: {actual_url}"
